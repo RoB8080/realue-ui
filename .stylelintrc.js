@@ -2,10 +2,10 @@ const rulesOrder = require('./lint/style-order')
 
 module.exports = {
     'plugins': [
-        'stylelint-order'
+        'stylelint-order',
     ],
     'extends': [
-        'stylelint-config-recommended-scss'
+        'stylelint-config-recommended-scss',
     ],
     rules: {
         'number-no-trailing-zeros': true,
@@ -16,6 +16,6 @@ module.exports = {
         'selector-type-no-unknown': [true, { ignoreTypes: ['page'] }],
         'indentation': 4,
         'order/order': rulesOrder.order,
-        'order/properties-order': rulesOrder.propertiesOrder
-    }
+        'order/properties-order': rulesOrder.propertiesOrder,
+    },
 }
