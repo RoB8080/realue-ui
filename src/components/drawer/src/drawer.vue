@@ -1,6 +1,7 @@
 <template>
     <div
         class="rl-drawer__wrap"
+        :class="[{closed}]"
         :style="[depthStyle, opacityStyle]"
         @touchstart="onTouchStart"
         @touchmove="onTouchMove"
@@ -76,6 +77,7 @@ export default class extends Vue {
     }
 
     position: number = 0
+    closed: boolean = true
     touchPrevX: number = 0
     touchPrevY: number = 0
     touchX: number = 0
@@ -86,6 +88,7 @@ export default class extends Vue {
     @Watch('position')
     onPositionChange(newV: number, oldV: number) {
         this.isOpenTrend = newV > oldV
+        this.closed = newV === 0
     }
 
     get translateVariable() {
@@ -148,32 +151,40 @@ export default class extends Vue {
     onTouchEnd() {
         const toOpen = this.position > 85 || (this.position > 15 && this.isOpenTrend)
         if (toOpen) {
-            const t = () => {
-                this.animationTimeout = setTimeout(() => {
-                    const pos = this.position * 0.9 + 10.7
-                    if (pos < 100) {
-                        this.position = pos
-                        t()
-                    } else {
-                        this.position = 100
-                    }
-                }, 17)
-            }
-            t()
+            this.open()
         } else {
-            const t = () => {
-                this.animationTimeout = setTimeout(() => {
-                    const pos = this.position * 0.9 - 0.7
-                    if (pos > 0) {
-                        this.position = pos
-                        t()
-                    } else {
-                        this.position = 0
-                    }
-                }, 17)
-            }
-            t()
+            this.close()
         }
+    }
+
+    open() {
+        const t = () => {
+            this.animationTimeout = setTimeout(() => {
+                const pos = this.position * 0.9 + 10.7
+                if (pos < 100) {
+                    this.position = pos
+                    t()
+                } else {
+                    this.position = 100
+                }
+            }, 17)
+        }
+        t()
+    }
+
+    close() {
+        const t = () => {
+            this.animationTimeout = setTimeout(() => {
+                const pos = this.position * 0.9 - 0.7
+                if (pos > 0) {
+                    this.position = pos
+                    t()
+                } else {
+                    this.position = 0
+                }
+            }, 17)
+        }
+        t()
     }
 
     created() {
@@ -193,6 +204,9 @@ export default class extends Vue {
 
     overflow: hidden;
     background-color: rgba(0, 0, 0, calc(.8 * var(--opacity)));
+    &.closed {
+        pointer-events: none;
+    }
 }
 
 .rl-drawer__body {

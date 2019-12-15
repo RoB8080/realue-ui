@@ -2,9 +2,10 @@
     <div class="home">
         <img
             alt="Vue logo"
-            src="../assets/logo.png">
+            src="../assets/logo.png"
+            @click="$share.sys({url: 'www.baidu.com'})">
         <hello-world msg="Welcome to Your Vue.js App" />
-        <drawer />
+        <drawer depth="70vw" />
     </div>
 </template>
 
